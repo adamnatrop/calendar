@@ -8,7 +8,7 @@ var calContainer = $('.container');
 
 var timeBlockArr = JSON.parse(localStorage.getItem("hourBlock")) || [];
 
-localStorage.clear();
+//localStorage.clear();
 
 // create object array for each hour
 for ( i = 9; i < 18; i++){
@@ -79,12 +79,18 @@ calContainer.on('click', ".saveBtn", saveEvent);
 
 
 function saveEvent(){
-    
-    // need to figure out how to select the text area 
+    localStorage.clear();
+    // select text box of row that button was clicked
     textAreaObj = $(this).siblings('textarea');
-    state = textAreaObj.attr('data-index');
-    // var text = textAreaObj.value;
-    console.log(state)
+    // looks for the index of the selected option
+    objIndex = textAreaObj.attr('data-index');
+    
+    var text = textAreaObj.val();
+
+    timeBlockArr[objIndex].activityDescription = text;
+
+    
+    console.log(timeBlockArr[objIndex])
     // figure out how to update global state 
 
     // push to local storage
