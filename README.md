@@ -8,7 +8,7 @@ Start organizing your day, today!
 ## Git Hub Repo Link
 https://github.com/adamnatrop/calendar
 
-## Git Hub Project Live Link
+## Git Hub Project Live Site Link
 https://adamnatrop.github.io/calendar/
 
 
