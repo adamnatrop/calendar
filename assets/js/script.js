@@ -20,7 +20,7 @@ currentDayElm.text("Today is: " + today.format('MMM Do, YYYY')+ " The time is: "
 // checks the length of the array to see if data is currently being stored
 if (timeBlockArr.length == 0){
 // create object array for each hour
-for ( i = 9; i < 24; i++){
+for ( i = 9; i < 18; i++){
 
     // looks at loop and converts the i variable from military time to standard
     if ( i >= 13 ){ 
