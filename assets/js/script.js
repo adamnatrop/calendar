@@ -1,17 +1,26 @@
 // elements from DOM
 var calContainer = $('.container');
-
+var currentDayElm = $('#currentDay');
 // global variables 
-
-
+var today = moment();
+var timeNow = moment().format('HH')
+var meridianNow = moment().format('a')
 //  arrays 
 
 var timeBlockArr = JSON.parse(localStorage.getItem("hourBlock")) || [];
 
-//localStorage.clear();
 
+
+// console.log(timeNow);
+
+
+
+currentDayElm.text("Today is: " + today.format('MMM Do, YYYY')+ " The time is: " + today.format('h:mm a'));
+
+// checks the length of the array to see if data is currently being stored
+if (timeBlockArr.length == 0){
 // create object array for each hour
-for ( i = 9; i < 18; i++){
+for ( i = 9; i < 24; i++){
 
     // looks at loop and converts the i variable from military time to standard
     if ( i >= 13 ){ 
@@ -27,10 +36,11 @@ for ( i = 9; i < 18; i++){
     var timeObj = 
     
     {
+        milTime: i,
         hour: j,
         morning: true,
         meridian: "AM", 
-        activityDescription: ""
+        activityDescription: ''
     }
 
     // change morning to false if after 12
@@ -42,8 +52,7 @@ for ( i = 9; i < 18; i++){
     // append object to timeBlockArr
     timeBlockArr.push(timeObj);
 }
-
-
+}
 
 
 
@@ -56,18 +65,20 @@ timeBlockArr.forEach(function(item, index){
     calContainer.append(rowContainer);
 
     var hourElm = $('<div>');
-    hourElm.addClass('hour col-sm');
+    hourElm.addClass('hour col-2');
 
     hourElm.text(arrayObj.hour + arrayObj.meridian);
 
     var textElm = $('<textarea>');
-    textElm.addClass('col-8 past');
+    textElm.addClass('col-8');
     textElm.attr("data-index", index);
+    textElm.text(arrayObj.activityDescription);
     
 
-    var saveBtn = $('<button>');
-    saveBtn.addClass('saveBtn col-sm far fa-save fa-3x');
+    var saveBtn = $('<button><i class="far fa-save"></i>');
+    saveBtn.addClass('saveBtn col-sm');
     
+    setHourClass(textElm, index);
     
     rowContainer.append(hourElm);
     rowContainer.append(textElm);
@@ -75,41 +86,46 @@ timeBlockArr.forEach(function(item, index){
 
 });
 
+
+function setHourClass(textElm, index){
+
+    if (timeBlockArr[index].milTime == timeNow){
+        textElm.addClass('present');
+
+    } else if (timeBlockArr[index].milTime < timeNow){
+        textElm.addClass('past');
+    } else {
+    // if (timeBlockArr[indx].hour > timeNow ){
+        textElm.addClass('future');
+    }
+    console.log(timeBlockArr[index])
+}
+
+
+
+
 calContainer.on('click', ".saveBtn", saveEvent);
 
 
 function saveEvent(){
+    // clears the local storage before pushing array - this prevents the array from appending itself 
     localStorage.clear();
+
     // select text box of row that button was clicked
-    textAreaObj = $(this).siblings('textarea');
+    var textAreaObj = $(this).siblings('textarea');
     // looks for the index of the selected option
-    objIndex = textAreaObj.attr('data-index');
-    
+    var objIndex = textAreaObj.attr('data-index');
+    // takes the text area input value and stores it into the variable text
     var text = textAreaObj.val();
-
+    // looks at the source object array, takes the index from the object clicked and sets the activity description key value to the text input
     timeBlockArr[objIndex].activityDescription = text;
-
-    
-    console.log(timeBlockArr[objIndex])
-    // figure out how to update global state 
-
-    // push to local storage
-
-    //$(this).siblings.val();
-   // console.log(textArea);
-    
+    // pushes object array into local storage in a JSON String
     localStorage.setItem("hourBlock", JSON.stringify(timeBlockArr));
-    
-   
-    //console.log(timeBlockArr);
-   //clear out array
-   //rebuild it
     
 };
 
 
 
-// textArea = timeBlockArr.activityDescription; 
 
 
 
@@ -118,14 +134,4 @@ function saveEvent(){
 
 
 // localStorage.clear();
-// var textArea = $('.past');
-    
 
-
-
-
-
-var calendarData = JSON.parse( localStorage.getItem("hourBlock"))
-
-
-// create a separate function to update local storage 
