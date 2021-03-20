@@ -61,7 +61,7 @@ timeBlockArr.forEach(function(item, index){
     var arrayObj = item
 
     var rowContainer = $('<div>');
-    rowContainer.addClass('row');
+    rowContainer.addClass('row hourCont');
     calContainer.append(rowContainer);
 
     var hourElm = $('<div>');
@@ -76,7 +76,7 @@ timeBlockArr.forEach(function(item, index){
     
 
     var saveBtn = $('<button><i class="far fa-save"></i>');
-    saveBtn.addClass('saveBtn col-sm');
+    saveBtn.addClass('saveBtn col-2');
     
     setHourClass(textElm, index);
     
